@@ -1,0 +1,179 @@
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+}
+
+:host {
+  width: 100%;
+  display: flex;
+  margin-top: 3rem !important;
+  padding: 3rem 0 !important;
+  --slider-height: 20vh;
+
+  @media screen and (min-width: 768px) {
+    --slider-height: 35vh;
+  }
+}
+
+.slider {
+  &__arrow {
+    flex: 0 0 5%;
+    height: var(--slider-height);
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    opacity: 0.3;
+    transition: opacity 0.3s, background-color 0.3s;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+
+    &:first-child {
+      margin-right: 1rem;
+    }
+
+    &:last-child {
+      margin-left: 1rem;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__wrapper {
+    flex: 0 0 55%;
+    height: var(--slider-height);
+    position: relative;
+    overflow: hidden;
+
+    @for $move from 0 to 100 {
+      &[data-slide="#{$move}"] {
+        @for $slidenro from 0 to 100 {
+          .slide:nth-child(#{$slidenro + 1}) {
+            z-index: -$slidenro;
+            $initialPosition: 100% * ($slidenro);
+            margin-left: $initialPosition - (100% * ($move));
+          }
+        }
+      }
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transition: margin-left 0.5s;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+
+      &__car {
+        position: absolute;
+        top: 0;
+        left: 8%;
+
+        &__name {
+          font-family: "Catamaran bold", sans-serif;
+          font-weight: bold;
+          margin: 0;
+          color: var(--brand-color);
+          animation: fadeInDown 0.5s linear;
+        }
+
+        &__description {
+          font-family: "Catamaran bold", sans-serif;
+          font-weight: bold;
+          color: var(--brand-dark-color);
+          margin: 0;
+          margin-left: 2rem;
+          opacity: 0;
+          animation: fadeIn 0.5s linear 0.5s forwards;
+        }
+      }
+    }
+  }
+
+  &__details {
+    flex: 0 0 35%;
+    margin-left: 2rem;
+    margin-top: 2rem;
+    height: calc(var(--slider-height) * 1.2);
+    background-image: linear-gradient(180deg, #0287ce 0%, #015287 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+
+    &__attribute {
+      flex-grow: 1;
+      font-family: "Catamaran bold", sans-serif;
+      color: white;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &-value {
+        animation: fadeInDown 0.5s linear;
+      }
+    }
+  }
+}
